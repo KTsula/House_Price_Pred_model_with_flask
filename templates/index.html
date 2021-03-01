@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>House Price Pred</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+</head>
+
+<body>
+    
+ <div class="login">
+    <h2 style="font-size: 35px; font-weight: 200; border-style: solid;
+    border-width: 5px;"> {{ prediction_text }}</h2>
+	<h1>ბინის ფასის გენერატორი</h1>
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+    	<input type="number" name="otaxebi" placeholder="ოთახების რაოდენობა" required="required" />
+        <input type="number" name="saerto parti" placeholder="საერთო ფართი (მ.კვ.)" required="required" />
+		<input type="number" name="sartuli" placeholder="სართული" required="required" />
+        <input type="number" name="sadzineblebi" placeholder="საძინებლების რაოდენობა" required="required" />
+        <input type="number" name="sveli wertili" placeholder="სველი წერტილების რაოდენობა" required="required" />
+        
+        <div>
+            <label for="aivani"> აივანი: </label>
+            <select style="background-color: rgb(59, 54, 77); color: honeydew"name="aivani" id="aivani">
+                <option value="1"> აქვს</option>
+                <option value="0"> არ აქვს</option>
+            </select>
+
+    <br>
+            <label for="centraluri gatboba"> ცენტრალური გათბობა: </label>
+            <select style="background-color: rgb(59, 54, 77); color: honeydew" name="centraluri gatboba" id="centraluri gatboba">
+                <option value="1"> აქვს</option>
+                <option value="0"> არ აქვს</option>
+            </select>
+
+    <br>
+            <label for="bunebrivi airi"> ბუნებრივი აირი: </label>
+            <select style="background-color: rgb(59, 54, 77); color: honeydew" name="bunebrivi airi" id="bunebrivi airi">
+                <option value="1"> აქვს</option>
+                <option value="0"> არ აქვს</option>
+            </select>
+
+    <br>
+            <label for="sardafi"> სარდაფი: </label>
+            <select style="background-color: rgb(59, 54, 77); color: honeydew" name="sardafi" id="sardafi">
+                <option value="1"> აქვს</option>
+                <option value="0"> არ აქვს</option>
+            </select>
+
+    <br>
+            <label for="satavso"> სათავსო: </label>
+            <select style="background-color: rgb(59, 54, 77); color: honeydew" name="satavso" id="satavso">
+                <option value="1"> აქვს</option>
+                <option value="0"> არ აქვს</option>
+            </select>
+
+    <br>
+            <label for="lifti"> ლიფტი: </label>
+            <select style="background-color: rgb(59, 54, 77); color: honeydew" name="lifti" id="lifti">
+                <option value="1"> აქვს</option>
+                <option value="0"> არ აქვს</option>
+            </select>
+        </div>
+<br>
+        <label for="ubani"> უბანი: </label>
+        <select style="background-color: rgb(59, 54, 77); color: honeydew" name="ubani" id="ubani">
+            <option value="აბანოთუბანი"> აბანოთუბანი</option>
+            <option value="აეროპორტის გზატ."> აეროპორტის გზატკეცილი</option>
+            <option value="აეროპორტის დას."> აეროპორტის დასახლება</option>
+            <option value="ავლაბარი"> ავლაბარი</option>
+            <option value="ავჭალა"> ავჭალა</option>
+            <option value="აფრიკის დას"> აფრიკის დასახლება</option>
+            <option value="ბაგები"> ბაგები</option>
+            <option value="გლდანი"> გლდანი</option>
+            <option value="დიდი დიღომი"> დიდი დიღომი</option>
+            <option value="დიდუბე"> დიდუბე</option>
+            <option value="დიღმის მასივი"> დიღმის მასივი</option>
+            <option value="დიღომი 1-9"> დიღომი 1-9</option>
+            <option value="ელია"> ელია</option>
+            <option value="ვაზისუბანი"> ვაზისუბანი</option>
+            <option value="ვაკე"> ვაკე</option>
+            <option value="ვაჟა ფშაველას კვარტლები"> ვაჟა ფშაველას კვარტლები</option>
+            <option value="ვარკეთილი"> ვარკეთილი</option>
+            <option value="ვაშლიჯვარი"> ვაშლიჯვარი</option>
+            <option value="ვერა"> ვერა</option>
+            <option value="ვეძისი"> ვეძისი</option>
+            <option value="ზაჰესი"> ზაჰესი</option>
+            <option value="თბილისის ზღვა"> თბილისის ზღვა</option>
+            <option value="თემქა"> თემქა</option>
+            <option value="ივერთუბანი"> ივერთუბანი</option>
+            <option value="ისანი"> ისანი</option>
+            <option value="კონიაკის დას."> კონიაკის დასახლება</option>
+            <option value="კუკია"> კუკია</option>
+            <option value="ლილო">ლილო</option>
+            <option value="ლისის ტბა"> ლისის ტბა</option>
+            <option value="ლოტკინი"> ლოტკინი</option>
+            <option value="მესამე მასივი"> მესამე მასივი</option>
+            <option value="მთაწმინდა"> მთაწმინდა</option>
+            <option value="მუხიანი"> მუხიანი</option>
+            <option value="ნავთლუღი"> ნავთლუღი</option>
+            <option value="ნაძალადევი"> ნაძალადევი</option>
+            <option value="ნუცუბიძის ფერდობი"> ნუცუბიძის ფერდობი</option>
+            <option value="ორთაჭალა"> ორთაჭალა</option>
+            <option value="საბურთალო"> საბურთალო</option>
+            <option value="სამგორი"> სამგორი</option>
+            <option value="სანზონა"> სანზონა</option>
+            <option value="სვანეთის უბანი"> სვანეთის უბანი</option>
+            <option value="სოლოლაკი"> სოლოლაკი</option>
+            <option value="სოფ. გლდანი"> სოფელი გლდანი</option>
+            <option value="სოფ. დიღომი"> სოფელი დიღომი</option>
+            <option value="ფონიჭალა"> ფონიჭალა</option>
+            <option value="ჩუღურეთი"> ჩუღურეთი</option>
+        </select>
+
+<br>
+        <label for="statusi"> სტატუსი: </label>
+        <select style="background-color: rgb(59, 54, 77); color: honeydew" name="statusi" id="statusi">
+            <option value="ახალი აშენებული"> ახალი აშენებული</option>
+            <option value="მშენებარე"> მშენებარე</option>
+            <option value="ძველი აშენებული"> ძველი აშენებული</option>
+        </select>
+
+<br>
+        <label for="mdgomareoba"> მდგომარეობა: </label>
+        <select style="background-color: rgb(59, 54, 77); color: honeydew" name="mdgomareoba" id="mdgomareoba">
+            <option value="ახალი რემონტით"> ახალი რემონტით</option>
+            <option value="გარემონტებული"> გარემონტებული</option>
+            <option value="თეთრი კარკასი"> თეთრი კარკასი</option>
+            <option value="მიმდინარე რემონტი"> მიმდინარე რემონტი</option>
+            <option value="მწვანე კარკასი"> მწვანე კარკასი</option>
+            <option value="სარემონტო"> სარემონტო</option>
+            <option value="შავი კარკასი"> შავი კარკასი</option>
+            <option value="ძველი რემონტით"> ძველი რემონტით</option>
+            
+        </select>
+
+<br><br>
+        <button style="font-size: 20px" type="submit" class="btn btn-primary btn-block btn-large">გენერირება</button>
+    </form>
+
+   <br>
+   
+
+ </div>
+
+
+</body>
+</html>
